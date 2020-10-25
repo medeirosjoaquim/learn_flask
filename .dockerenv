@@ -1,0 +1,3 @@
+POSTGRES_DB=flaskdb
+POSTGRES_API_USER=api_server
+POSTGRES_PASSWORD=docker

@@ -1,0 +1,76 @@
+version: "3.6"
+services:
+  # api:
+  #   build: ./
+  #   container_name: appapi
+  #   depends_on:
+  #     - appdb
+  #   dns: 8.8.8.8
+  #   image: flask-api
+  #   networks:
+  #     - app-network
+  #   ports:
+  #     - "5000:5000"
+  #   tty: true
+  #   volumes:
+  #     - ./:/api/
+  appdb:
+    build: ./db/
+    container_name: appdb
+    env_file:
+      - .dockerenv
+    image: flask-db
+    networks:
+      - app-network
+    ports:
+      - "5532:5532"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: "exit 0"
+
+
+  # flaskpgadmin:
+  #   container_name: flaskpgadmin
+  #   depends_on:
+  #     - appdb
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=johnboxcodes@gmail.com
+  #     - PGADMIN_DEFAULT_PASSWORD=docker
+  #   image: dpage/pgadmin4:latest
+  #   logging:
+  #     driver: syslog
+  #   networks:
+  #     - app-network
+  #   ports:
+  #     - 6500:80
+  #   volumes:
+  #     - pgadmin:/var/lib/pgadmin
+
+  pgadmin4:
+      image: dpage/pgadmin4:4.16
+      hostname: pgadmin4
+      volumes:
+        - pgadmin_data:/var/lib/pgadmin
+      environment:
+        - PGADMIN_DEFAULT_EMAIL=docker@gmail.com
+        - PGADMIN_DEFAULT_PASSWORD=docker
+      ports:
+        - 6500:80
+      restart: on-failure
+      networks:
+        - app-network
+      depends_on:
+        appdb:
+          condition: service_healthy
+
+networks:
+  app-network:
+    name: app-network
+
+volumes:
+  postgres-data:
+    name: postgres-data
+  pgadmin:
+    name: pgadmin
+  pgadmin_data:
