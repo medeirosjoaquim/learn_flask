@@ -5,12 +5,13 @@ from psycopg2 import sql
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
+from flask.templating import render_template
 
 Base = declarative_base()
 
 app = Flask(__name__)
 app.debug = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:password@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flask:flask@localhost/postgres'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -31,10 +32,10 @@ class Tasks(db.Model):
             return '<Tasks {}>'.format(self.title)
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def index():
+    return 'hello'
 
 @app.route('/test')
 def test():
-    print (Tasks.query.all())
-    return "hello"
+    
+    return render_template('index.html', tasks = Tasks.query.all())
