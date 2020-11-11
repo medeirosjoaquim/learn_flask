@@ -1,19 +1,19 @@
 version: "3.6"
 services:
-  # api:
-  #   build: ./
-  #   container_name: appapi
-  #   depends_on:
-  #     - appdb
-  #   dns: 8.8.8.8
-  #   image: flask-api
-  #   networks:
-  #     - app-network
-  #   ports:
-  #     - "5000:5000"
-  #   tty: true
-  #   volumes:
-  #     - ./:/api/
+  api:
+    build: ./
+    container_name: appapi
+    depends_on:
+      - appdb
+    dns: 8.8.8.8
+    image: flask-api
+    networks:
+      - app-network
+    ports:
+      - "5000:5000"
+    tty: true
+    volumes:
+      - ./:/api/
   appdb:
     build: ./db/
     container_name: appdb
@@ -24,7 +24,7 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: flaskdb
       POSTGRES_API_USER: docker
       POSTGRES_PASSWORD: docker
     volumes:

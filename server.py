@@ -11,7 +11,7 @@ Base = declarative_base()
 
 app = Flask(__name__)
 app.debug = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flask:flask@localhost/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://docker:docker@appdb/postgres'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -22,7 +22,7 @@ class Tasks(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(String(50))
     description = Column(String(100))
-    completed = Column(Boolean)
+    #completed = Column(Boolean)
 
     def __init__(self, title, description, completed):
         self.title = title
