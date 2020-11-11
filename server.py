@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import psycopg2
 import psycopg2.extras
 from psycopg2 import sql
@@ -31,11 +31,25 @@ class Tasks(db.Model):
     def __repr__(self):
             return '<Tasks {}>'.format(self.title)
 
+@app.route('/create')
+def create():
+        title = request.args.get('title')
+        description = request.args.get('description')
+        completed = request.args.get('completed')
+        completed_value = False
+        if completed == 'true':
+            completed_value = True
+        data = Tasks(title, description, completed_value)
+        db.session.add(data)
+        db.session.commit()
+        return 'success'
+    
 @app.route('/')
 def index():
     return 'hello'
 
+
+
 @app.route('/test')
 def test():
-    
     return render_template('index.html', tasks = Tasks.query.all())

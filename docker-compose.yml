@@ -17,35 +17,20 @@ services:
   appdb:
     build: ./db/
     container_name: appdb
-    env_file:
-      - .dockerenv
     image: flask-db
     networks:
       - app-network
     ports:
-      - "5532:5532"
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_API_USER: docker
+      POSTGRES_PASSWORD: docker
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: "exit 0"
-
-
-  # flaskpgadmin:
-  #   container_name: flaskpgadmin
-  #   depends_on:
-  #     - appdb
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=johnboxcodes@gmail.com
-  #     - PGADMIN_DEFAULT_PASSWORD=docker
-  #   image: dpage/pgadmin4:latest
-  #   logging:
-  #     driver: syslog
-  #   networks:
-  #     - app-network
-  #   ports:
-  #     - 6500:80
-  #   volumes:
-  #     - pgadmin:/var/lib/pgadmin
 
   pgadmin4:
       image: dpage/pgadmin4:4.16
@@ -74,3 +59,4 @@ volumes:
   pgadmin:
     name: pgadmin
   pgadmin_data:
+    name: pgadmin_data

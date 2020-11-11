@@ -4,14 +4,15 @@
     <title>My Webpage</title>
 </head>
 <body>
+    <h1>Tasks</h1>
+    {{ a_variable }}
     <ul id="navigation">
     {% for item in tasks %}
         <li>{{item.title}} - {{item.description }}</a></li>
     {% endfor %}
     </ul>
 
-    <h1>My Webpage</h1>
-    {{ a_variable }}
+    
 
     {# a comment #}
 </body>
